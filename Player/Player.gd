@@ -6,9 +6,7 @@ const FRICTION = 500
 
 var velocity = Vector2.ZERO
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	print("Character Init...")
+onready var animationPlayer = $AnimationPlayer
 
 # Called every physics tick
 func _physics_process(delta):
@@ -18,7 +16,12 @@ func _physics_process(delta):
 	input_vector = input_vector.normalized()
 	
 	if input_vector != Vector2.ZERO:
+		if input_vector.x > 0:
+			animationPlayer.play("RunRight")
+		else:
+			animationPlayer.play("RunLeft")
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
 	else:
+		animationPlayer.play("IdleRight")
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)	
 	velocity = move_and_slide(velocity)

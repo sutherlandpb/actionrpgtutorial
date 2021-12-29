@@ -19,6 +19,7 @@ onready var animationState = $AnimationTree.get("parameters/playback")
 
 func _ready():
 	animationTree.active = true
+	$HitBoxPivot/SwordHitBox/CollisionShape2D.set_deferred("disabled", true)
 	
 # Called every physics tick
 func _process(delta):

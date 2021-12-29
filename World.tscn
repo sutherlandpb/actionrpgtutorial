@@ -562,6 +562,7 @@ tile_data = PoolIntArray( 12, 0, 4, 13, 0, 196610, 65547, 0, 0, 65548, 0, 131079
 [node name="DirtCliffTileMap" type="TileMap" parent="."]
 tile_set = SubResource( 2 )
 cell_size = Vector2( 32, 32 )
+collision_mask = 0
 format = 1
 tile_data = PoolIntArray( 9, 0, 3, 65545, 0, 196612, 65546, 0, 196610, 196616, 0, 196608, 196617, 0, 8, 196618, 0, 196610, 262153, 0, 65539, 327689, 0, 196612, 327690, 0, 196610 )
 

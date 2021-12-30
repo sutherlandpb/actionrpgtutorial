@@ -619,4 +619,4 @@ position = Vector2( 280, 80 )
 position = Vector2( 184, 168 )
 
 [node name="Bat3" parent="YSort" instance=ExtResource( 7 )]
-position = Vector2( 88, 40 )
+position = Vector2( 24, 36 )

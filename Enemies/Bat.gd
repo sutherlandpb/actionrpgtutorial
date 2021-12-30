@@ -4,6 +4,7 @@ const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
 export var ACCELERATION = 300
 export var MAX_SPEED = 50
 export var FRICTION = 200
+export var BUMP_SIZE = 200
 
 enum {
 	IDLE,
@@ -19,6 +20,7 @@ onready var stats = $Stats
 onready var playerDetectionZone = $PlayerDetectionZone
 onready var sprite = $AnimatedSprite
 onready var hurtbox = $HurtBox
+onready var softCollision = $SoftCollision
 
 func _physics_process(delta):
 	knockback = knockback.move_toward(Vector2.ZERO, FRICTION * delta)
@@ -37,9 +39,12 @@ func _physics_process(delta):
 				velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)
 			else:
 				state = IDLE	
-			velocity = move_and_slide(velocity)
-			
 	sprite.flip_h = velocity.x < 0
+	if softCollision.is_colliding():
+		velocity += softCollision.get_push_vector() * delta * BUMP_SIZE
+	velocity = move_and_slide(velocity)
+			
+	
 func _on_HurtBox_area_entered(area):
 	stats.health -= area.damage
 	knockback = area.knockback_vector * 120

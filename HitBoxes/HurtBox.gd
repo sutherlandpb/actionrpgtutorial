@@ -27,14 +27,14 @@ func create_hit_effect():
 	effect.global_position = global_position
 
 func _on_Timer_timeout():
+	print("timer ended")
 	self.invincible = false
-
 
 func _on_HurtBox_invincibility_ended():
 	#re-enable collisions
-	set_deferred("monitorable",true)
-
+	monitorable = true
 
 func _on_HurtBox_invincibility_started():
 	#disable collisions
 	set_deferred("monitorable",false)
+

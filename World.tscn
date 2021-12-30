@@ -569,6 +569,12 @@ collision_mask = 0
 format = 1
 tile_data = PoolIntArray( 9, 0, 3, 65545, 0, 196612, 65546, 0, 196610, 196616, 0, 196608, 196617, 0, 8, 196618, 0, 196610, 262153, 0, 65539, 327689, 0, 196612, 327690, 0, 196610 )
 
+[node name="HealthUI" parent="." instance=ExtResource( 8 )]
+margin_left = 5.0
+margin_top = 4.0
+margin_right = 133.0
+margin_bottom = 28.0
+
 [node name="YSort" type="YSort" parent="."]
 
 [node name="Player" parent="YSort" instance=ExtResource( 2 )]
@@ -630,9 +636,3 @@ position = Vector2( 144, 32 )
 
 [node name="tree2" parent="YSort/trees" instance=ExtResource( 9 )]
 position = Vector2( 96, 168 )
-
-[node name="HealthUI" parent="." instance=ExtResource( 8 )]
-margin_left = 5.0
-margin_top = 4.0
-margin_right = 133.0
-margin_bottom = 28.0

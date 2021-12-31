@@ -5,6 +5,7 @@ export var ACCELERATION = 300
 export var MAX_SPEED = 50
 export var FRICTION = 200
 export var BUMP_SIZE = 200
+export var TARGET_REACHED_BUFFER = 4
 
 enum {
 	IDLE,
@@ -22,7 +23,9 @@ onready var sprite = $AnimatedSprite
 onready var hurtbox = $HurtBox
 onready var softCollision = $SoftCollision
 onready var wanderController = $WanderController
-
+func _ready():
+	state = pick_random_state([IDLE, WANDER])
+	
 func _physics_process(delta):
 	knockback = knockback.move_toward(Vector2.ZERO, FRICTION * delta)
 	knockback = move_and_slide(knockback)
@@ -32,25 +35,26 @@ func _physics_process(delta):
 			velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 			seek_player()
 			if wanderController.get_time_left() == 0:
-				state = pick_random_state([IDLE, WANDER])
-				wanderController.start_wander_timer(rand_range(1,3))
+				update_wander()
 			
 		WANDER:
 			seek_player()
 			if wanderController.get_time_left() == 0:
-				state = pick_random_state([IDLE, WANDER])
-				wanderController.start_wander_timer(rand_range(1,3))
-			var direction = global_position.direction_to(wanderController.targetPosition)
-			velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)	
+				update_wander()
+			
+			accelerate_towards_point(wanderController.targetPosition, delta)
+			
+			if global_position.distance_to(wanderController.targetPosition) <= TARGET_REACHED_BUFFER:
+				update_wander()
 			
 		CHASE:
 			var player = playerDetectionZone.player
 			if player != null:
-				var direction = global_position.direction_to(player.global_position)
-				velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)
+				accelerate_towards_point(player.global_position, delta)
+				
 			else:
 				state = IDLE	
-	sprite.flip_h = velocity.x < 0
+	
 	if softCollision.is_colliding():
 		velocity += softCollision.get_push_vector() * delta * BUMP_SIZE
 	velocity = move_and_slide(velocity)
@@ -66,11 +70,20 @@ func _on_Stats_no_health():
 	var enemyDeathEffect = EnemyDeathEffect.instance()
 	get_parent().add_child(enemyDeathEffect)
 	enemyDeathEffect.global_position = global_position
-
+	
+func accelerate_towards_point(point, delta):
+	var direction = global_position.direction_to(point)
+	velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)	
+	sprite.flip_h = velocity.x < 0
+	
 func seek_player():
 	if playerDetectionZone.can_see_player():
 		state = CHASE
 
+func update_wander():
+	state = pick_random_state([IDLE, WANDER])
+	wanderController.start_wander_timer(rand_range(1,3))
+	
 func pick_random_state(state_list):
 	state_list.shuffle()
 	return state_list.pop_front()	

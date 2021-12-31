@@ -66,7 +66,7 @@ script = ExtResource( 5 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 6 )
 animation = "AnimateFly"
-frame = 1
+frame = 4
 playing = true
 offset = Vector2( 0, -12 )
 
@@ -81,7 +81,6 @@ shape = SubResource( 7 )
 collision_layer = 8
 
 [node name="CollisionShape2D" parent="HurtBox" index="0"]
-visible = false
 modulate = Color( 0.537255, 0.470588, 0.376471, 1 )
 position = Vector2( 0, -13 )
 shape = SubResource( 8 )

@@ -23,6 +23,7 @@ onready var hitbox = $HitBoxPivot/SwordHitBox
 onready var hurtbox = $HurtBox
 
 func _ready():
+	randomize()
 	stats.connect("no_health", self, "queue_free")
 	animationTree.active = true
 	$HitBoxPivot/SwordHitBox/CollisionShape2D.set_deferred("disabled", true)

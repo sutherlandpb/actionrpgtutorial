@@ -10,7 +10,7 @@ enum {
 	ROLL,
 	ATTACK
 }
-
+const PlayerHurtSound = preload("res://Player/PlayerHurtSound.tscn")
 var state = MOVE
 var velocity = Vector2.ZERO
 var roll_vector = Vector2.LEFT
@@ -21,6 +21,7 @@ onready var animationTree = $AnimationTree
 onready var animationState = $AnimationTree.get("parameters/playback")
 onready var hitbox = $HitBoxPivot/SwordHitBox 
 onready var hurtbox = $HurtBox
+onready var blinkAnimationPlayer = $BlinkAnimationPlayer
 
 func _ready():
 	randomize()
@@ -83,6 +84,16 @@ func attack_animation_finish():
 	state = MOVE
 
 func _on_HurtBox_area_entered(area):
-	stats.health -= 1
-	hurtbox.start_invincibility(0.5)
+	stats.health -= area.damage
+	hurtbox.start_invincibility(0.6)
 	hurtbox.create_hit_effect()
+	var playerHurtSound = PlayerHurtSound.instance()
+	get_tree().current_scene.add_child(playerHurtSound)
+
+
+func _on_HurtBox_invincibility_started():
+	blinkAnimationPlayer.play("Start")
+
+
+func _on_HurtBox_invincibility_ended():
+	blinkAnimationPlayer.play("Stop")

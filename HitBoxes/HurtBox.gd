@@ -13,7 +13,6 @@ func set_invincible(value):
 	invincible = value
 	if invincible == true:
 		emit_signal("invincibility_started")
-		set_deferred("monitorable",false)
 	else: 
 		emit_signal("invincibility_ended")
 		
@@ -31,11 +30,11 @@ func create_hit_effect():
 func _on_Timer_timeout():
 	self.invincible = false
 
-#func _on_HurtBox_invincibility_ended():
-#	#re-enable collisions
-#	monitorable = true
-#
-#func _on_HurtBox_invincibility_started():
-#	#disable collisions
-#	set_deferred("monitorable",false)
+func _on_HurtBox_invincibility_ended():
+	#re-enable collisions
+	monitorable = true
+
+func _on_HurtBox_invincibility_started():
+	#disable collisions
+	set_deferred("monitorable",false)
 
